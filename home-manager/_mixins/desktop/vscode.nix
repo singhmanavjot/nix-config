@@ -11,6 +11,7 @@
       redhat.vscode-yaml
       hashicorp.terraform
       github.vscode-github-actions
+      esbenp.prettier-vscode
     ];
   };
 }
