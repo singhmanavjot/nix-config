@@ -19,6 +19,7 @@
       ncdu # Disk usage analyzer with an ncurses interface
       exoscale-cli # Command-line tool for everything at Exoscale: compute, storage, dns
       postgresql # A powerful, open source object-relational database system
+      python3 # A high-level dynamically-typed programming language
     ];
 
     sessionVariables = {
