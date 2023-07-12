@@ -18,7 +18,7 @@
       kubernetes-helm # A package manager for kubernetes
       ncdu # Disk usage analyzer with an ncurses interface
       exoscale-cli # Command-line tool for everything at Exoscale: compute, storage, dns
-      postgresql
+      postgresql # A powerful, open source object-relational database system
     ];
 
     sessionVariables = {
