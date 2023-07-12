@@ -3,6 +3,7 @@
 
   environment.systemPackages = with pkgs; [
     kind
+    minikube
   ];
 
   virtualisation.docker.enable = true;
