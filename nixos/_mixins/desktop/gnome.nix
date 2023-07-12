@@ -7,6 +7,8 @@
   environment.systemPackages = with pkgs; [
     celluloid
     gnomeExtensions.media-controls
+    gnomeExtensions.wireguard-vpn-extension
+    gnomeExtensions.tailscale-status
     gnome.gnome-tweaks
   ];
 
