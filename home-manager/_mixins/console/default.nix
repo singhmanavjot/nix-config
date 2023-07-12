@@ -17,6 +17,8 @@
       kustomize # Customization of kubernetes YAML configurations
       kubernetes-helm # A package manager for kubernetes
       ncdu # Disk usage analyzer with an ncurses interface
+      exoscale-cli # Command-line tool for everything at Exoscale: compute, storage, dns
+      postgresql
     ];
 
     sessionVariables = {
