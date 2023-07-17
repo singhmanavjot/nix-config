@@ -10,16 +10,19 @@
     # A Modern Unix experience
     # https://jvns.ca/blog/2022/04/12/a-list-of-new-ish--command-line-tools/
     packages = with pkgs; [
-      dconf2nix # Nix code from Dconf files
-      nixpkgs-fmt # Code format Nix
-      kubectl # Kubernetes CLI
-      terraform # Tool for building, changing, and versioning infrastructure
-      kustomize # Customization of kubernetes YAML configurations
-      kubernetes-helm # A package manager for kubernetes
-      ncdu # Disk usage analyzer with an ncurses interface
-      exoscale-cli # Command-line tool for everything at Exoscale: compute, storage, dns
-      postgresql # A powerful, open source object-relational database system
+      dconf2nix
+      nixpkgs-fmt
+      kubectl
+      terraform
+      kustomize
+      kubernetes-helm
+      ncdu
+      exoscale-cli
+      postgresql
       wireguard-tools
+      kuttl
+      gnumake
+      chart-testing
     ];
 
     sessionVariables = {
