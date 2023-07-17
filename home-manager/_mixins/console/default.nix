@@ -40,6 +40,7 @@
         prettybat
       ];
     };
+    btop.enable = true;
     dircolors = {
       enable = true;
       enableBashIntegration = true;
