@@ -34,6 +34,7 @@
         "bin/"
         "dist/"
         "result"
+        ".envrc"
       ];
     };
   };
