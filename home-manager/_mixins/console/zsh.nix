@@ -6,7 +6,7 @@
 
     oh-my-zsh = {
       enable = true;
-      plugins = [ "git" "kubectl" "minikube" ];
+      plugins = [ "git" "kubectl" "minikube" "direnv" "terraform" "1password" ];
     };
   };
 }
