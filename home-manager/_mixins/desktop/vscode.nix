@@ -12,6 +12,8 @@
       hashicorp.terraform
       github.vscode-github-actions
       esbenp.prettier-vscode
+      coder.coder-remote
+      ms-vscode-remote.remote-ssh
     ];
   };
 }
