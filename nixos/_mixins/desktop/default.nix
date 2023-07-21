@@ -11,6 +11,7 @@
       (nerdfonts.override { fonts = [ "FiraCode" ]; })
       joypixels
       work-sans
+      noto-fonts-cjk
     ];
 
     # use fonts specified by user rather than default ones
