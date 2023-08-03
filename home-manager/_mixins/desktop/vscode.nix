@@ -14,6 +14,7 @@
       esbenp.prettier-vscode
       coder.coder-remote
       ms-vscode-remote.remote-ssh
+      ms-azuretools.vscode-docker
     ];
   };
 }
