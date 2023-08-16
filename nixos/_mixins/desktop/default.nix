@@ -7,7 +7,7 @@
 
   fonts = {
     fontDir.enable = true;
-    fonts = with pkgs; [
+    packages = with pkgs; [
       (nerdfonts.override { fonts = [ "FiraCode" ]; })
       joypixels
       work-sans
@@ -15,7 +15,7 @@
     ];
 
     # use fonts specified by user rather than default ones
-    enableDefaultFonts = false;
+    enableDefaultPackages = false;
 
     fontconfig = {
       antialias = true;
