@@ -23,6 +23,8 @@
       kuttl
       gnumake
       chart-testing
+      kubeseal
+      kubectx
     ];
 
     sessionVariables = {
@@ -70,6 +72,11 @@
     starship = {
       enable = true;
       enableZshIntegration = true;
+      settings = {
+        kubernetes = {
+          disabled = false;
+        };
+      };
     };
     zoxide = {
       enable = true;
