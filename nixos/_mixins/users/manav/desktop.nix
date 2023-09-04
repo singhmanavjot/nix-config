@@ -14,5 +14,6 @@
     meld
     signal-desktop
     obsidian
+    teams
   ];
 }
