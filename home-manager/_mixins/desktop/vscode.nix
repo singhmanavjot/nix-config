@@ -15,6 +15,8 @@
       coder.coder-remote
       ms-vscode-remote.remote-ssh
       ms-azuretools.vscode-docker
+      streetsidesoftware.code-spell-checker
+      wholroyd.jinja
     ];
   };
 }
