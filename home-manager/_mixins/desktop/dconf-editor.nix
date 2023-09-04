@@ -5,5 +5,9 @@ with lib.hm.gvariant;
     "ca/desrt/dconf-editor" = {
       show-warning = false;
     };
+    "org/virt-manager/virt-manager/connections" = {
+    autoconnect = ["qemu:///system"];
+    uris = ["qemu:///system"];
+  };
   };
 }

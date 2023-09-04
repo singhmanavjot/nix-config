@@ -8,7 +8,7 @@ in
 
   users.users.manav = {
     description = "Manavjot Singh";
-    extraGroups = [ "audio" "networkmanager" "users" "video" "wheel" ] ++ ifExists [ "docker" ];
+    extraGroups = [ "audio" "networkmanager" "users" "video" "wheel" ] ++ ifExists [ "docker" ] ++ ifExists [ "libvirtd" ];
     homeMode = "0755";
     isNormalUser = true;
     packages = [ pkgs.home-manager ];
