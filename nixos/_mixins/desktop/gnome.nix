@@ -10,6 +10,9 @@
     gnomeExtensions.wireguard-vpn-extension
     gnomeExtensions.tailscale-status
     gnome.gnome-tweaks
+    gnomeExtensions.pop-shell
+    gnomeExtensions.system-monitor
+    networkmanager_strongswan
   ];
 
   services = {

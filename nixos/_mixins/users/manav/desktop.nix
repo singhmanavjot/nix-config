@@ -15,5 +15,6 @@
     signal-desktop
     obsidian
     teams
+    flameshot
   ];
 }

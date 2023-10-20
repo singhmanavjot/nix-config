@@ -18,5 +18,18 @@
       streetsidesoftware.code-spell-checker
       wholroyd.jinja
     ];
+    userSettings = {
+      "yaml.customTags" = [
+        "!vault scalar"
+      ];
+      "redhat.telemetry.enabled" = false;
+      "workbench.colorTheme" = "Catppuccin Mocha";
+      "[json]" = {
+          "editor.defaultFormatter" = "esbenp.prettier-vscode";
+      };
+      "workbench.startupEditor" = "none";
+      "workbench.iconTheme" = "catppuccin-mocha";
+      "ansible.python.interpreterPath" = "/home/manav/.nix-profile/bin/python";
+    };
   };
 }

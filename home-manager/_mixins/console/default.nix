@@ -30,6 +30,12 @@
       ansible-lint
       python3
       vagrant
+      pre-commit
+      yamllint
+      go-task
+      gatekeeper
+      yq-go
+      kics
     ];
 
     sessionVariables = {
@@ -60,7 +66,7 @@
         enable = true;
       };
     };
-    exa = {
+    eza = {
       enable = true;
       enableAliases = true;
       icons = true;
