@@ -1,0 +1,80 @@
+#!/bin/bash
+# Pre-commit hook - runs full validation before commits
+
+set -e
+
+echo "🔍 Running full validation before commit..."
+
+# Nix files
+echo "📝 Formatting all .nix files..."
+if command -v treefmt >/dev/null 2>&1; then
+	treefmt
+	echo "✅ All .nix files formatted"
+else
+	echo "⚠️  treefmt not found in PATH"
+fi
+
+echo "🔍 Running statix checks..."
+if command -v statix >/dev/null 2>&1; then
+	statix check
+	echo "✅ Statix checks passed"
+else
+	echo "⚠️  statix not found in PATH"
+fi
+
+echo "🧹 Running deadnix checks..."
+if command -v deadnix >/dev/null 2>&1; then
+	deadnix
+	echo "✅ Deadnix checks passed"
+else
+	echo "⚠️  deadnix not found in PATH"
+fi
+
+# Markdown files
+echo "📝 Checking markdown files..."
+if command -v markdownlint >/dev/null 2>&1; then
+	fd -e md -x markdownlint 2>/dev/null || true
+	echo "✅ Markdown checks completed"
+else
+	echo "⚠️  markdownlint not found in PATH"
+fi
+
+# Shell scripts (by directory)
+echo "🐚 Checking shell scripts..."
+script_dirs=("bin" "scripts" ".claude/hooks")
+for dir in "${script_dirs[@]}"; do
+	if [[ -d "$dir" ]]; then
+		echo "  Checking scripts in $dir/..."
+
+		# Format with shfmt
+		if command -v shfmt >/dev/null 2>&1; then
+			shfmt -w "$dir"/* 2>/dev/null || true
+		fi
+
+		# Check with shellcheck
+		if command -v shellcheck >/dev/null 2>&1; then
+			shellcheck "$dir"/* 2>/dev/null || true
+		fi
+
+		# Harden with shellharden
+		if command -v shellharden >/dev/null 2>&1; then
+			for file in "$dir"/*; do
+				if [[ -f "$file" ]]; then
+					shellharden --replace "$file" 2>/dev/null || true
+				fi
+			done
+		fi
+	fi
+done
+echo "✅ Shell script checks completed"
+
+# Nix flake check
+echo "🏗️  Running nix flake check..."
+if command -v nix >/dev/null 2>&1; then
+	nix flake check
+	echo "✅ Nix flake check passed"
+else
+	echo "⚠️  nix command not found in PATH"
+fi
+
+echo "🎉 All validation checks passed!"

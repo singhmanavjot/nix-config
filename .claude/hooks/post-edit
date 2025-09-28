@@ -1,0 +1,68 @@
+#!/bin/bash
+# Post-edit hook - runs formatting after editing files
+
+set -e
+
+file="$1"
+
+# Function to check if file is a shell script
+is_shell_script() {
+	local file="$1"
+	# Check by directory location
+	if [[ "$file" == */bin/* ]] || [[ "$file" == */scripts/* ]] || [[ "$file" == */.claude/hooks/* ]]; then
+		return 0
+	fi
+	# Check by shebang
+	if [[ -f "$file" ]] && head -1 "$file" 2>/dev/null | rg -q '^#!/.*sh'; then
+		return 0
+	fi
+	return 1
+}
+
+# Nix files
+if [[ "$file" == *.nix ]]; then
+	echo "🔧 Auto-formatting Nix file with nixfmt..."
+
+	# Format with nixfmt
+	if command -v nixfmt >/dev/null 2>&1; then
+		nixfmt "$file"
+		echo "✅ Formatted $file"
+	else
+		echo "⚠️  nixfmt not found in PATH"
+	fi
+
+# Markdown files
+elif [[ "$file" == *.md ]]; then
+	echo "📝 Auto-formatting Markdown file..."
+
+	# Try markdownlint --fix first, fallback to prettier
+	if command -v markdownlint >/dev/null 2>&1; then
+		markdownlint --fix "$file" 2>/dev/null || true
+		echo "✅ Formatted $file with markdownlint"
+	elif command -v prettier >/dev/null 2>&1; then
+		prettier --write "$file"
+		echo "✅ Formatted $file with prettier"
+	else
+		echo "⚠️  No markdown formatter found (markdownlint or prettier)"
+	fi
+
+# Shell scripts
+elif is_shell_script "$file"; then
+	echo "🐚 Auto-formatting shell script..."
+
+	# Format with shfmt
+	if command -v shfmt >/dev/null 2>&1; then
+		shfmt -w "$file"
+		echo "✅ Formatted $file with shfmt"
+	else
+		echo "⚠️  shfmt not found in PATH"
+	fi
+
+	# Harden with shellharden
+	if command -v shellharden >/dev/null 2>&1; then
+		shellharden --replace "$file"
+		echo "✅ Hardened $file with shellharden"
+	else
+		echo "⚠️  shellharden not found in PATH"
+	fi
+fi

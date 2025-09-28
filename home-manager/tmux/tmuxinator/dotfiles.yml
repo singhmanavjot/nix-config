@@ -1,0 +1,7 @@
+---
+name: dotfiles
+root: ~/workspace/github.com/singhmanavjot/nix-config
+windows:
+  -  editor: nvim .
+  -  shell: null
+  - 󰊢 lazygit: lg
