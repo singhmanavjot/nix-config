@@ -12,6 +12,10 @@
           "Bash(tree:*)"
           "Bash(find:*)"
           "Bash(ls:*)"
+          "Bash(git checkout:*)"
+          "Bash(gh pr view:*)"
+          "Bash(git cherry-pick:*)"
+          "Bash(gh repo view:*)"
         ];
       };
     };
