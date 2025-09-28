@@ -8,8 +8,7 @@
       "Bash(nix flake check:*)",
       "Bash(shellcheck:*)",
       "Bash(shfmt:*)",
-      "Bash(shellharden:*)",
-      "Bash(gh issue create:*)"
+      "Bash(shellharden:*)"
     ],
     "deny": [],
     "ask": []
