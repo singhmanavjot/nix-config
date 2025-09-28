@@ -50,6 +50,44 @@ v1.0.0](https://www.conventionalcommits.org/en/v1.0.0/) specification:
 [optional footer(s)]
 ```
 
+### Conventional Branch Naming
+
+Follow the [Conventional Branch
+v1.0.0](https://conventional-branch.github.io/) specification:
+
+#### Branch Format
+
+```text
+<type>/<description>
+```
+
+#### Branch Types
+
+- `main`: Main development branch
+- `feature/` or `feat/`: New features
+- `bugfix/` or `fix/`: Bug fixes
+- `hotfix/`: Urgent fixes for production
+- `release/`: Release preparation branches
+- `chore/`: Maintenance, dependencies, cleanup
+
+#### Branch Naming Rules
+
+- Use lowercase alphanumerics and hyphens only
+- Avoid special characters, underscores, or spaces
+- No consecutive, leading, or trailing hyphens/dots
+- Keep names clear and concise
+
+#### Branch Examples
+
+```text
+feature/add-nixvim-lsp-support
+fix/darwin-homebrew-configuration
+hotfix/security-patch-flake-inputs
+release/v2.1.0
+chore/update-nixpkgs-dependencies
+feat/issue-42-zsh-configuration
+```
+
 #### Required Types
 
 - `feat`: New features, packages, or configurations
