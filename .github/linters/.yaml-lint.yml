@@ -1,0 +1,27 @@
+# YAML linting configuration for Super-Linter
+# Based on yamllint: https://yamllint.readthedocs.io/en/stable/rules.html
+
+extends: default
+
+rules:
+  # Allow longer lines for GitHub Actions and nix configurations
+  line-length:
+    max: 120
+    level: warning
+
+  # Allow 2-space indentation (GitHub Actions standard)
+  indentation:
+    spaces: 2
+
+  # Allow comments to be indented
+  comments-indentation: disable
+
+  # Allow truthy values (on/off, yes/no) common in GitHub Actions
+  truthy:
+    allowed-values: ['true', 'false', 'on', 'off', 'yes', 'no']
+    check-keys: false
+
+  # Allow empty values in YAML
+  empty-values:
+    forbid-in-block-mappings: false
+    forbid-in-flow-mappings: false

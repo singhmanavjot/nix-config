@@ -1,0 +1,30 @@
+# Markdown linting configuration for Super-Linter
+# Based on markdownlint rules: https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md
+
+# Enable all rules by default
+default: true
+
+# Allow long lines for code blocks and tables
+MD013:
+  line_length: 120
+  code_blocks: false
+  tables: false
+
+# Allow multiple consecutive blank lines in some cases
+MD012:
+  maximum: 2
+
+# Allow raw HTML (useful for documentation)
+MD033: false
+
+# Allow inline HTML
+MD036: false
+
+# Allow bare URLs
+MD034: false
+
+# Allow emphasis for entire sentences
+MD036: false
+
+# Allow first line in file to be anything (not just H1)
+MD041: false

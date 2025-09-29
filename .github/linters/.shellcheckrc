@@ -1,0 +1,20 @@
+# ShellCheck configuration for Super-Linter
+# Documentation: https://github.com/koalaman/shellcheck/wiki/Directive
+
+# Enable all checks by default
+# Disable specific problematic checks:
+
+# SC1091: Not following sourced files (common in complex scripts)
+disable=SC1091
+
+# SC2034: Unused variables (may be used by sourced scripts)
+# disable=SC2034
+
+# SC2155: Declare and assign separately to avoid masking return values
+# disable=SC2155
+
+# Use bash as default shell
+shell=bash
+
+# Include common source paths for Claude Code hooks
+source-path=SCRIPTDIR
