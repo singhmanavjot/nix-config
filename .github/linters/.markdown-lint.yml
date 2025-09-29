@@ -23,8 +23,7 @@ MD036: false
 # Allow bare URLs
 MD034: false
 
-# Allow emphasis for entire sentences
-MD036: false
+# Allow emphasis for entire sentences (duplicate removed)
 
 # Allow first line in file to be anything (not just H1)
 MD041: false
