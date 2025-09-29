@@ -9,7 +9,8 @@
       "Bash(shellcheck:*)",
       "Bash(shfmt:*)",
       "Bash(shellharden:*)",
-      "Bash(gh issue create:*)"
+      "Bash(gh issue create:*)",
+      "Bash(gh issue:*)"
     ],
     "deny": [],
     "ask": []
