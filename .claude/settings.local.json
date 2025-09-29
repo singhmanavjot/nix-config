@@ -10,7 +10,8 @@
       "Bash(shfmt:*)",
       "Bash(shellharden:*)",
       "Bash(gh issue create:*)",
-      "Bash(gh issue:*)"
+      "Bash(nh darwin build:*)",
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": []
