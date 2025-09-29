@@ -16,6 +16,7 @@ in
     ./k9s.nix
     ./kind
     ./nixvim
+    ./sops.nix
     ./ssh.nix
     ./starship.nix
     ./tmux

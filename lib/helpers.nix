@@ -35,6 +35,7 @@
                 ../home-manager
                 inputs.nixvim.homeModules.nixvim
                 inputs.mac-app-util.homeManagerModules.default
+                inputs.sops-nix.homeManagerModules.sops
               ];
             };
             extraSpecialArgs = {
