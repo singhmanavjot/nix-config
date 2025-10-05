@@ -1,0 +1,70 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:best-practices",
+    ":preserveSemverRanges"
+  ],
+  "timezone": "Europe/Vienna",
+  "schedule": [
+    "every weekend"
+  ],
+  "prHourlyLimit": 2,
+  "prConcurrentLimit": 5,
+  "rebaseWhen": "conflicted",
+  "platformAutomerge": false,
+  "nix": {
+    "enabled": true
+  },
+  "packageRules": [
+    {
+      "matchPackageNames": ["/nixpkgs/"],
+      "groupName": "nixpkgs",
+      "minimumReleaseAge": "3 days",
+      "prPriority": 10
+    },
+    {
+      "matchPackageNames": ["/home-manager/", "/nix-darwin/"],
+      "groupName": "core system tools",
+      "minimumReleaseAge": "1 day",
+      "prPriority": 8
+    },
+    {
+      "matchPackageNames": ["/nixvim/", "/nix-index-database/", "/mac-app-util/", "/sops-nix/", "/nix-homebrew/"],
+      "groupName": "nix ecosystem tools",
+      "minimumReleaseAge": "1 day",
+      "prPriority": 6
+    },
+    {
+      "matchPackageNames": ["/homebrew/"],
+      "groupName": "homebrew",
+      "minimumReleaseAge": "1 day",
+      "prPriority": 5
+    },
+    {
+      "matchManagers": ["github-actions"],
+      "groupName": "GitHub Actions",
+      "minimumReleaseAge": "2 days",
+      "prPriority": 7,
+      "addLabels": ["github-actions"]
+    },
+    {
+      "matchUpdateTypes": ["minor", "patch"],
+      "addLabels": ["minor-update"],
+      "prPriority": 5,
+      "minimumReleaseAge": "1 day"
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "addLabels": ["major-update"],
+      "prPriority": -10,
+      "minimumReleaseAge": "7 days"
+    }
+  ],
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 6am every weekend"]
+  },
+  "labels": ["dependencies"],
+  "assignees": ["singhmanavjot"],
+  "reviewers": ["singhmanavjot"]
+}
