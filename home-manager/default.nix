@@ -97,6 +97,7 @@ in
       gping
       tree
       ast-grep
+      renovate
     ];
 
     sessionVariables = {

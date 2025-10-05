@@ -1,0 +1,76 @@
+name: Renovate Validation
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'flake.nix'
+      - 'flake.lock'
+      - '**.nix'
+      - '.github/workflows/**'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    if: github.actor == 'renovate[bot]'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v14
+
+      - name: Setup Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@v7
+
+      - name: Validate flake
+        run: |
+          echo "Running nix flake check..."
+          nix flake check --no-build --accept-flake-config
+
+      - name: Build Darwin configuration
+        run: |
+          echo "Building Darwin configuration..."
+          nix build .#darwinConfigurations.macbook-air.system --no-link --accept-flake-config
+
+      - name: Validate GitHub Actions workflows
+        run: |
+          echo "Validating GitHub Actions workflow syntax..."
+          for workflow in .github/workflows/*.yml .github/workflows/*.yaml; do
+            if [ -f "$workflow" ]; then
+              echo "Checking $workflow"
+              # Basic YAML syntax check
+              if ! command -v yq &> /dev/null; then
+                python3 -c "import yaml; yaml.safe_load(open('$workflow'))"
+              else
+                yq eval '.' "$workflow" > /dev/null
+              fi
+            fi
+          done
+
+      - name: Comment on PR
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '✅ Renovate validation passed! Nix flake check, Darwin build, and GitHub Actions validation succeeded.'
+            })
+
+      - name: Comment on failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '❌ Renovate validation failed! Please check the logs for details.'
+            })
