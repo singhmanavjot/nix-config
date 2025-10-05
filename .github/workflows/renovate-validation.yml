@@ -13,6 +13,9 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     if: github.actor == 'renovate[bot]'
+    permissions:
+      contents: read
+      pull-requests: write
 
     steps:
       - name: Checkout
@@ -39,15 +42,19 @@ jobs:
       - name: Validate GitHub Actions workflows
         run: |
           echo "Validating GitHub Actions workflow syntax..."
-          for workflow in .github/workflows/*.yml .github/workflows/*.yaml; do
-            if [ -f "$workflow" ]; then
-              echo "Checking $workflow"
-              # Basic YAML syntax check
-              if ! command -v yq &> /dev/null; then
-                python3 -c "import yaml; yaml.safe_load(open('$workflow'))"
-              else
-                yq eval '.' "$workflow" > /dev/null
-              fi
+          shopt -s nullglob
+          workflows=(.github/workflows/*.yml .github/workflows/*.yaml)
+          if [ ${#workflows[@]} -eq 0 ]; then
+            echo "No workflow files found"
+            exit 0
+          fi
+          for workflow in "${workflows[@]}"; do
+            echo "Checking $workflow"
+            # Basic YAML syntax check
+            if ! command -v yq &> /dev/null; then
+              python3 -c 'import sys, yaml; yaml.safe_load(open(sys.argv[1]))' "$workflow"
+            else
+              yq eval '.' "$workflow" > /dev/null
             fi
           done
 
