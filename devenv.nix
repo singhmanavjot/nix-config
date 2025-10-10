@@ -42,7 +42,7 @@
   enterTest = ''
     nix flake check
     if [[ "$OSTYPE" == "darwin"* ]]; then
-      nh darwin build -q --no-update-lock-file -H $DARWIN_TEST_HOSTNAME .
+      nh darwin build --no-nom --no-update-lock-file -H $DARWIN_TEST_HOSTNAME .
     else
       nh os build -q --no-update-lock-file .
     fi
