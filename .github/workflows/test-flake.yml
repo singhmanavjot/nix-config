@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-    runs-on: ${{ matrix.os }}
+    runs-on: macos-latest # ${{ matrix.os }}
 
     steps:
       - name: Checkout repository
@@ -33,6 +33,11 @@ jobs:
         uses: cachix/cachix-action@ad2ddac53f961de1989924296a1f236fcfbaa4fc # v15
         with:
           name: devenv
+
+      - name: Check Nix flake inputs
+        uses: DeterminateSystems/flake-checker-action@v12
+        with:
+          send-statistics: false
 
       - name: Install devenv
         run: nix profile add nixpkgs#devenv
