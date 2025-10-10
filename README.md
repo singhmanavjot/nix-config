@@ -1,96 +1,115 @@
 # Nix Configuration
 
-Personal Nix configuration for macOS (nix-darwin) with Home Manager integration.
-
-## Structure
-
-- `darwin/` - macOS system configuration with nix-darwin
-- `home-manager/` - User environment configuration
-- `lib/` - Helper functions and utilities
-- `overlays/` - Package overlays and customizations
+Personal Nix configuration monorepo managing macOS system configurations
+using nix-darwin and home-manager.
 
 ## Quick Start
 
 ### Prerequisites
 
-1. Install Nix with flakes enabled
-2. Install [nh](https://github.com/viperML/nh) for convenient rebuilds
+- Nix with flakes enabled
+- [nh](https://github.com/viperML/nh) (recommended) or darwin-rebuild
 
-### Build and Apply
+### Building and Applying
 
 ```bash
-nh darwin switch --ask
+# Build configuration without applying changes
+nh darwin build .
+
+# Build and apply changes
+nh darwin switch .
 ```
 
-## Configuration
+### Alternative commands
 
-### System Configuration
-
-The Darwin configuration is located in `darwin/` with host-specific configs:
-
-- `darwin/macbook-air/` - Configuration for the MacBook Air host
-
-### User Environment
-
-Home Manager modules in `home-manager/` include:
-
-- **Shell**: zsh with starship prompt
-- **Terminal**: ghostty configuration
-- **Editor**: nixvim (Neovim with Nix configuration)
-- **Tools**: tmux, btop, yazi, k9s, and more
-- **Window Management**: aerospace
-- **Development**: git, ssh, and Claude Code integration
+```bash
+# Using darwin-rebuild
+darwin-rebuild build --flake .
+darwin-rebuild switch --flake .
+```
 
 ## Development
 
-### Linting
+### Development Environment
 
 ```bash
-# Nix files
-treefmt
-statix check
-deadnix
+# Enter development shell
+devenv shell
 
-# Markdown files
-markdownlint **/*.md
-
-# Shell scripts
-shellcheck bin/* scripts/* .claude/hooks/*
-shfmt -w bin/* scripts/* .claude/hooks/*
-shellharden bin/* scripts/* .claude/hooks/*
+# Start development services
+devenv up
 ```
 
-### Testing
+### Testing and Validation
 
 ```bash
-# Flake structure validation
+# Validate flake configuration
 nix flake check
 
-# Build validation (builds but doesn't activate)
-nh darwin build .
-
-# Alternative: Direct nix build
-nix build .#darwinConfigurations.macbook-air.system
-
-# Direct evaluation test
-nix eval .#darwinConfigurations.macbook-air.system >/dev/null
+# Run test suite (builds Darwin and NixOS variants)
+devenv test
 ```
 
-## Features
+## Project Structure
 
-- **Declarative macOS configuration** with nix-darwin
-- **User environment management** with Home Manager
-- **Homebrew integration** via nix-homebrew
-- **Custom Neovim setup** with nixvim
-- **Development tools** and shell configuration
-- **Window management** with aerospace
-- **Terminal multiplexing** with tmux and tmuxinator
+```text
+├── darwin/           # macOS system-level configuration (nix-darwin)
+│   ├── _mixins/      # Modular system configurations
+│   └── default.nix   # Main Darwin configuration
+├── home-manager/     # User-level configuration
+│   ├── nixvim/       # Neovim configuration
+│   ├── ghostty/      # Terminal emulator config
+│   └── ...           # Other user applications
+├── lib/              # Helper functions and utilities
+├── secrets/          # SOPS-encrypted secrets
+└── flake.nix         # Flake definition and outputs
+```
 
-## Hosts
+### Key Features
 
-- `macbook-air` - Primary macOS configuration
+- **Modular Architecture**: Organized mixins for easy configuration management
+- **Comprehensive Tooling**: DevOps, security, and development tools included
+- **Secrets Management**: SOPS integration with age encryption
+- **Pre-commit Hooks**: Automated formatting and linting
+- **Cross-platform Testing**: Validates both Darwin and NixOS builds
 
-## License
+## Configuration Management
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE)
-file for details.
+### System Configuration (Darwin)
+
+Located in `darwin/` directory:
+
+- System preferences and keyboard settings
+- Homebrew integration for GUI applications
+- Nix daemon configuration
+
+### User Configuration (Home Manager)
+
+Located in `home-manager/` directory:
+
+- Complete Neovim setup with LSP support
+- Shell configuration (zsh, starship)
+- Terminal applications (tmux, ghostty)
+- Development tools and utilities
+
+## Secrets
+
+Secrets are managed using SOPS with age encryption:
+
+- Store secrets in `secrets/secrets.yaml`
+- Age key file: `$HOME/.config/sops/age/keys.txt`
+
+## Development Tools
+
+Includes comprehensive tooling for:
+
+- **DevOps**: kubectl, helm, terraform, docker, kind
+- **Security**: trivy, cosign, syft, age, sops
+- **Development**: Language servers, formatters, linters
+- **Utilities**: bat, ripgrep, fd, fzf, lazygit
+
+## Platform Support
+
+- Primary target: Apple Silicon (aarch64-darwin)
+- Homebrew with Rosetta support for x86 applications
+- Integrated Darwin and home-manager configurations

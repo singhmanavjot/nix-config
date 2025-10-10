@@ -22,7 +22,7 @@ in
     ./tmux
     ./yazi.nix
     ./zsh.nix
-    ./claude-code
+    ./claude-code.nix
   ];
 
   home = {
@@ -186,7 +186,7 @@ in
   };
 
   editorconfig = {
-    enable = false;
+    enable = true;
     settings = {
       "*" = {
         charset = "utf-8";

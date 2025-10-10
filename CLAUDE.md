@@ -1,210 +1,117 @@
-# Claude Code Configuration for Nix Config
+# CLAUDE.md
 
-## Core Principle
+This file provides guidance to Claude Code (claude.ai/code) when working with
+code in this repository.
 
-Always think critically and deeply before acting. Implement only the specific
-tasks requested with the most concise, maintainable, and elegant solution that
-minimizes code changes.
+## Project Overview
 
-## Commands
+This is a personal Nix configuration monorepo that manages system
+configurations for macOS using nix-darwin and home-manager. The repository
+follows a modular structure with separate configurations for Darwin (macOS)
+system-level settings and home-manager user-level configurations.
 
-### Build
+## Key Development Commands
 
-```bash
-nh darwin switch --ask
-```
+### Build System
 
-### Lint
+- `nh darwin build .` - Build Darwin configuration without applying changes
+- `nh darwin switch .` - Build and apply Darwin configuration changes
+- `darwin-rebuild build --flake .` - Alternative build command for Darwin
+- `darwin-rebuild switch --flake .` - Alternative switch command for Darwin
 
-```bash
-# Nix files
-treefmt
-statix check
-deadnix
+### Testing and Validation
 
-# Markdown files
-markdownlint **/*.md
+- `nix flake check` - Validate flake configuration and check for errors
+- `devenv test` - Run the test suite as defined in devenv.nix (builds both
+  Darwin and NixOS variants)
 
-# Shell scripts (by directory)
-shellcheck bin/* scripts/* .claude/hooks/*
-shfmt -w bin/* scripts/* .claude/hooks/*
-shellharden bin/* scripts/* .claude/hooks/*
-```
+### Development Environment
 
-### Test
+- `devenv shell` - Enter development shell with all required tools
+- `devenv up` - Start development services
 
-```bash
-# Flake structure validation
-nix flake check
+### Linting and Formatting
 
-# Build validation (builds but doesn't activate)
-nh darwin build .
+Pre-commit hooks are configured and will run automatically on commit:
 
-# Alternative: Direct nix build
-nix build .#darwinConfigurations.macbook-air.system
+- `nixfmt-rfc-style` - Format Nix files
+- `deadnix` - Remove dead Nix code (with auto-edit enabled)
+- `statix` - Lint Nix code for best practices
+- `actionlint` - Lint GitHub Actions
+- `prettier` - Format YAML, JSON, and Markdown files
+- `markdownlint` - Lint Markdown files
 
-# Direct evaluation test
-nix eval .#darwinConfigurations.macbook-air.system >/dev/null
-```
+## Architecture Overview
 
-## Tool Preferences
+### Core Structure
 
-- **File Search**: Use Glob tool instead of find
-- **Text Search**: Use Grep tool instead of grep
-- **Text Processing**: Leverage sed and awk for find/replace operations
-- **AST Operations**: Use ast-grep (sg) for syntax-aware code modifications
-- **Directory Exploration**: Use tree to visualize repository structure
-- **NEVER use bash commands like `find`, `grep`, `cat`, `head`, `tail`, `ls`** - use Claude Code tools instead
-- **Never generate or guess URLs** unless confident they're for programming help
+The repository is organized into three main directories:
 
-## Development Standards
+1. **`darwin/`** - macOS system-level configuration
+   - Contains nix-darwin modules for system settings
+   - Organized with mixins pattern for modular configuration
+   - Includes Homebrew integration for GUI applications
 
-### Code Quality
+2. **`home-manager/`** - User-level configuration
+   - Contains home-manager modules for user environment
+   - Includes dotfiles, shell configuration, and application settings
+   - Features a comprehensive Nixvim configuration
 
-- Prioritize readability and maintainability
-- Make minimal, surgical changes
-- Preserve existing code style and conventions
-- Test changes before finalizing
-- **Never compromise type safety**: No `any`, no non-null assertion operator
-  (`!`), no type assertions (`as Type`)
-- **DO NOT ADD ANY COMMENTS** unless explicitly asked
+3. **`lib/`** - Helper functions and utilities
+   - Contains `mkDarwin` helper for creating Darwin configurations
+   - Centralizes common patterns and specialArgs handling
 
-### Testing Philosophy
+### Configuration Flow
 
-- Write tests that verify semantically correct behavior
-- **Failing tests are acceptable** when they expose genuine bugs
-- Let test failures guide TDD - they indicate what needs fixing
-- Focus on testing the right behavior, not just making tests pass
+1. `flake.nix` defines inputs and outputs, creating Darwin configurations via `lib/helpers.nix`
+2. `darwin/default.nix` imports system modules and the specific hostname configuration
+3. Home-manager is integrated as a Darwin module, importing `home-manager/default.nix`
+4. The modular structure allows selective importing of functionality
 
-### Communication
+### Key Modules
 
-- Never include AI attribution in commits or PRs
-- Write clear, concise commit messages focused on the change itself
-- Document only what's necessary for human developers
-- **Always use Conventional Commits format**: `<type>[optional scope]: <description>`
-- **Do NOT add unnecessary preamble or postamble** (such as explaining code or summarizing actions), unless explicitly requested
-- Do not add additional code explanation summary unless requested by the user
-- If unable to help with something, do not explain why or what it could lead to
-- Only use emojis if explicitly requested
+- **Darwin Mixins** (`darwin/_mixins/`):
+  - `system/` - macOS system preferences and keyboard settings
+  - `homebrew/` - GUI application management via Homebrew
+  - `nix/` - Nix daemon and system configuration
 
-### Conventional Commits Format
+- **Home-manager Modules** (`home-manager/`):
+  - `nixvim/` - Complete Neovim configuration with plugins, keymaps, and LSP
+  - `ghostty/` - Terminal emulator configuration
+  - `tmux/` - Terminal multiplexer setup with custom config
+  - Shell configurations (zsh, starship) and development tools
 
-Follow the [Conventional Commits
-v1.0.0](https://www.conventionalcommits.org/en/v1.0.0/) specification:
+### Development Tools Integration
 
-```text
-<type>[optional scope]: <description>
+The configuration includes comprehensive tooling for:
 
-[optional body]
+- **DevOps**: kubectl, helm, terraform, docker, kind, etc.
+- **Security**: trivy, cosign, syft, age, sops
+- **Development**: Multiple language servers, formatters, and linters
+- **System utilities**: bat, ripgrep, fd, fzf, lazygit, etc.
 
-[optional footer(s)]
-```
+## Important Notes
 
-### Conventional Branch Naming
+### Secrets Management
 
-Follow the [Conventional Branch
-v1.0.0](https://conventional-branch.github.io/) specification:
+- Uses SOPS for secrets encryption with age keys
+- Secrets are stored in `secrets/secrets.yaml`
+- Age key file location: `$HOME/.config/sops/age/keys.txt`
 
-#### Branch Format
+### Platform Considerations
 
-```text
-<type>/<description>
-```
+- Designed primarily for Apple Silicon (aarch64-darwin)
+- Homebrew integration includes Rosetta support for x86 applications
+- Home-manager and Darwin configurations are tightly integrated
 
-#### Branch Types
+### Flake Management
 
-- `main`: Main development branch
-- `feature/` or `feat/`: New features
-- `bugfix/` or `fix/`: Bug fixes
-- `hotfix/`: Urgent fixes for production
-- `release/`: Release preparation branches
-- `chore/`: Maintenance, dependencies, cleanup
+- Uses flake-utils patterns for cross-platform support
+- Dependencies are pinned with explicit follows for input consistency
+- Regular updates should be done via `nix flake update`
 
-#### Branch Naming Rules
+### Testing Strategy
 
-- Use lowercase alphanumerics and hyphens only
-- Avoid special characters, underscores, or spaces
-- No consecutive, leading, or trailing hyphens/dots
-- Keep names clear and concise
-
-#### Branch Examples
-
-```text
-feature/add-nixvim-lsp-support
-fix/darwin-homebrew-configuration
-hotfix/security-patch-flake-inputs
-release/v2.1.0
-chore/update-nixpkgs-dependencies
-feat/issue-42-zsh-configuration
-```
-
-#### Required Types
-
-- `feat`: New features, packages, or configurations
-- `fix`: Bug fixes, corrections, or patches
-- `docs`: Documentation changes
-- `style`: Code formatting, whitespace (no functional changes)
-- `refactor`: Code restructuring without functional changes
-- `perf`: Performance improvements
-- `test`: Adding or updating tests
-- `build`: Build system or external dependencies
-- `ci`: CI/CD configuration changes
-- `chore`: Maintenance, dependency updates, cleanup
-
-#### Scope Examples for Nix Configs
-
-- `(darwin)`: macOS system configuration
-- `(home-manager)`: User environment configuration
-- `(nixvim)`: Neovim configuration
-- `(flake)`: Flake-level changes
-- `(hooks)`: Claude Code hooks
-
-#### Breaking Changes
-
-- Add `!` after type: `feat(darwin)!: redesign system configuration`
-- Or use footer: `BREAKING CHANGE: removed legacy homebrew support`
-
-#### Examples
-
-```text
-feat(nixvim): add lsp support for rust
-fix(darwin): correct homebrew tap configuration
-chore(flake): update nixpkgs to latest stable
-docs: update README with installation instructions
-refactor(home-manager): reorganize module structure
-```
-
-### Problem-Solving Approach
-
-- **Understand**: Fully comprehend the specific task
-- **Analyze**: Examine existing code structure and patterns
-- **Plan**: Design the minimal change needed
-- **Execute**: Implement with precision
-- **Verify**: Ensure the solution works and doesn't break existing functionality
-
-### Command Examples
-
-```bash
-# Find files
-fd "pattern" --type f --extension js
-
-# Search code
-rg "function.*async" --type js
-
-# AST-based refactoring
-ast-grep --pattern 'console.log($ARG)' --rewrite 'logger.debug($ARG)' --lang js
-
-# Explore structure
-tree -I 'node_modules|.git' -L 3
-```
-
-## Project Settings
-
-- **Languages**: Nix, Markdown, Shell scripts
-- **Primary tools**: treefmt, nixfmt, statix, deadnix, markdownlint,
-  shellcheck, shfmt, shellharden, nh
-- **Config type**: NixOS/Darwin flake configuration
-- **Script directories**: bin/, scripts/, .claude/hooks/
-
-
-**Remember**: Quality over quantity. Think twice, code once.
+The devenv.nix test command validates both Darwin and NixOS builds to ensure
+cross-platform compatibility, even though this is primarily a Darwin
+configuration.

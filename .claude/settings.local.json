@@ -1,18 +1,6 @@
 {
   "permissions": {
-    "allow": [
-      "Bash(treefmt:*)",
-      "Bash(markdownlint:*)",
-      "Bash(statix check:*)",
-      "Bash(deadnix)",
-      "Bash(nix flake check:*)",
-      "Bash(shellcheck:*)",
-      "Bash(shfmt:*)",
-      "Bash(shellharden:*)",
-      "Bash(gh issue create:*)",
-      "Bash(nh darwin build:*)",
-      "Bash(git add:*)"
-    ],
+    "allow": ["WebFetch(domain:github.com)"],
     "deny": [],
     "ask": []
   }
