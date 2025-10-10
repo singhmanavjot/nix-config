@@ -8,10 +8,7 @@ permissions: {}
 
 jobs:
   tests:
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest]
-    runs-on: macos-latest # ${{ matrix.os }}
+    runs-on: macos-latest
 
     steps:
       - name: Checkout repository
