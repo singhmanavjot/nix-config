@@ -34,6 +34,11 @@ jobs:
         with:
           name: devenv
 
+      - name: Check Nix flake inputs
+        uses: DeterminateSystems/flake-checker-action@v12
+        with:
+          send-statistics: false
+
       - name: Install devenv
         run: nix profile add nixpkgs#devenv
 
