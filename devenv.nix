@@ -4,7 +4,10 @@
 }:
 
 {
-  env.SOPS_AGE_KEY_FILE = "$HOME/.config/sops/age/keys.txt";
+  env = {
+    SOPS_AGE_KEY_FILE = "$HOME/.config/sops/age/keys.txt";
+    DARWIN_TEST_HOSTNAME = "macbook-air";
+  };
 
   packages = with pkgs; [
     nh
@@ -39,7 +42,7 @@
   enterTest = ''
     nix flake check
     if [[ "$OSTYPE" == "darwin"* ]]; then
-      nh darwin build -q --no-update-lock-file .
+      nh darwin build -q --no-update-lock-file -H $DARWIN_TEST_HOSTNAME .
     else
       nh os build -q --no-update-lock-file .
     fi
