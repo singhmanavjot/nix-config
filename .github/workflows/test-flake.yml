@@ -24,10 +24,15 @@ jobs:
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup cache
+      - name: Setup CI cache
         uses: DeterminateSystems/magic-nix-cache-action@v13
         with:
           diagnostic-endpoint: ""
+
+      - name: Setup devenv cache
+        uses: cachix/cachix-action@v15
+        with:
+          name: devenv
 
       - name: Install devenv
         run: nix profile add nixpkgs#devenv
