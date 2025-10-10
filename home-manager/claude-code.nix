@@ -19,6 +19,5 @@
         ];
       };
     };
-    memory.text = builtins.readFile ./memory.md;
   };
 }
