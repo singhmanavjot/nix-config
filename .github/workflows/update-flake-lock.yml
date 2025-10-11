@@ -22,11 +22,6 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Remove runner bloat
-        uses: wimpysworld/nothing-but-nix@v6
-        with:
-          hatchet-protocol: "holster"
-
       - name: Install Nix
         uses: nixbuild/nix-quick-install-action@v34
         with:
