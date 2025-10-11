@@ -59,7 +59,7 @@ jobs:
           send-statistics: false
 
       - name: Install devenv
-        run: nix profile add nixpkgs#devenv
+        run: nix profile install nixpkgs#devenv
 
       - name: Run flake check
         run: devenv tasks run check:flake
@@ -98,7 +98,7 @@ jobs:
           purge-primary-key: never
 
       - name: Install devenv
-        run: nix profile add nixpkgs#devenv
+        run: nix profile install nixpkgs#devenv
 
       - name: Build Darwin configuration
         run: devenv tasks run build:darwin
@@ -137,7 +137,7 @@ jobs:
           purge-primary-key: never
 
       - name: Install devenv
-        run: nix profile add nixpkgs#devenv
+        run: nix profile install nixpkgs#devenv
 
       - name: Run linting
         run: devenv tasks run devenv:git-hooks:run

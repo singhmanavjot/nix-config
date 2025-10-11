@@ -39,6 +39,9 @@ jobs:
           purge-last-accessed: 0
           purge-primary-key: never
 
+      - name: Install devenv
+        run: nix profile install nixpkgs#devenv
+
       - name: Update devenv.lock
         run: devenv update
 
