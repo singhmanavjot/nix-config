@@ -1,0 +1,158 @@
+---
+name: CI
+
+on:
+  pull_request:
+    paths-ignore:
+      - ".github/workflows/update-flake-lock.yml"
+      - "**.md"
+      - "LICENSE"
+      - ".gitignore"
+
+permissions: {}
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  nix_conf: |
+    substituters = https://cache.nixos.org/ https://nix-community.cachix.org https://devenv.cachix.org
+    trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=
+    keep-env-derivations = true
+    keep-outputs = true
+
+jobs:
+  flake-check:
+    runs-on: macos-latest
+
+    permissions:
+      actions: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+        with:
+          persist-credentials: false
+
+      - name: Remove runner bloat
+        uses: wimpysworld/nothing-but-nix@v6
+        with:
+          hatchet-protocol: "holster"
+
+      - name: Install Nix
+        uses: nixbuild/nix-quick-install-action@v34
+        with:
+          nix_conf: ${{ env.nix_conf }}
+
+      - name: Restore and save Nix store
+        uses: nix-community/cache-nix-action@v6
+        with:
+          primary-key: nix-flake-check-${{ runner.os }}-${{ hashFiles('**/*.nix', '**/flake.lock', '**/devenv.lock', '**/devenv.yaml') }}
+          restore-prefixes-first-match: |
+            nix-flake-check-${{ runner.os }}-
+            nix-${{ runner.os }}-
+          paths: |
+            .devenv
+          gc-max-store-size-linux: 1G
+          purge: true
+          purge-prefixes: nix-flake-check-${{ runner.os }}-
+          purge-created: 0
+          purge-last-accessed: 0
+          purge-primary-key: never
+
+      - name: Check Nix flake inputs
+        uses: DeterminateSystems/flake-checker-action@3164002371bc90729c68af0e24d5aacf20d7c9f6 # v12
+        with:
+          send-statistics: false
+
+      - name: Install devenv
+        run: nix profile add nixpkgs#devenv
+
+      - name: Run flake check
+        run: devenv tasks run check:flake
+
+  darwin-build:
+    runs-on: macos-latest
+
+    permissions:
+      actions: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+        with:
+          persist-credentials: false
+
+      - name: Remove runner bloat
+        uses: wimpysworld/nothing-but-nix@v6
+        with:
+          hatchet-protocol: "holster"
+
+      - name: Install Nix
+        uses: nixbuild/nix-quick-install-action@v34
+        with:
+          nix_conf: ${{ env.nix_conf }}
+
+      - name: Restore and save Nix store
+        uses: nix-community/cache-nix-action@v6
+        with:
+          primary-key: nix-darwin-build-${{ runner.os }}-${{ hashFiles('**/*.nix', '**/flake.lock', '**/devenv.lock', '**/devenv.yaml') }}
+          restore-prefixes-first-match: |
+            nix-darwin-build-${{ runner.os }}-
+            nix-${{ runner.os }}-
+          paths: |
+            .devenv
+          gc-max-store-size-linux: 1G
+          purge: true
+          purge-prefixes: nix-darwin-build-${{ runner.os }}-
+          purge-created: 0
+          purge-last-accessed: 0
+          purge-primary-key: never
+
+      - name: Install devenv
+        run: nix profile add nixpkgs#devenv
+
+      - name: Build Darwin configuration
+        run: devenv tasks run build:darwin
+
+  lint:
+    runs-on: macos-latest
+
+    permissions:
+      actions: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+        with:
+          persist-credentials: false
+
+      - name: Remove runner bloat
+        uses: wimpysworld/nothing-but-nix@v6
+        with:
+          hatchet-protocol: "holster"
+
+      - name: Install Nix
+        uses: nixbuild/nix-quick-install-action@v34
+        with:
+          nix_conf: ${{ env.nix_conf }}
+
+      - name: Restore and save Nix store
+        uses: nix-community/cache-nix-action@v6
+        with:
+          primary-key: nix-lint-${{ runner.os }}-${{ hashFiles('**/*.nix', '**/flake.lock', '**/devenv.lock', '**/devenv.yaml') }}
+          restore-prefixes-first-match: |
+            nix-lint-${{ runner.os }}-
+            nix-${{ runner.os }}-
+          paths: |
+            .devenv
+          gc-max-store-size-linux: 1G
+          purge: true
+          purge-prefixes: nix-lint-${{ runner.os }}-
+          purge-created: 0
+          purge-last-accessed: 0
+          purge-primary-key: never
+
+      - name: Install devenv
+        run: nix profile add nixpkgs#devenv
+
+      - name: Run linting
+        run: devenv tasks run devenv:git-hooks:run
