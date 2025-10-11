@@ -41,12 +41,12 @@ jobs:
           persist-credentials: false
 
       - name: Install Nix
-        uses: nixbuild/nix-quick-install-action@v34
+        uses: nixbuild/nix-quick-install-action@2c9db80fb984ceb1bcaa77cdda3fdf8cfba92035 # v34
         with:
           nix_conf: ${{ env.nix_conf }}
 
       - name: Restore and save Nix store
-        uses: nix-community/cache-nix-action@v6
+        uses: nix-community/cache-nix-action@135667ec418502fa5a3598af6fb9eb733888ce6a # v6
         with:
           primary-key: nix-flake-check-${{ runner.os }}-${{ hashFiles('**/*.nix', '**/flake.lock', '**/devenv.lock', '**/devenv.yaml') }}
           restore-prefixes-first-match: |
@@ -85,12 +85,12 @@ jobs:
           persist-credentials: false
 
       - name: Install Nix
-        uses: nixbuild/nix-quick-install-action@v34
+        uses: nixbuild/nix-quick-install-action@2c9db80fb984ceb1bcaa77cdda3fdf8cfba92035 # v34
         with:
           nix_conf: ${{ env.nix_conf }}
 
       - name: Restore and save Nix store
-        uses: nix-community/cache-nix-action@v6
+        uses: nix-community/cache-nix-action@135667ec418502fa5a3598af6fb9eb733888ce6a # v6
         with:
           primary-key: nix-darwin-build-${{ runner.os }}-${{ hashFiles('**/*.nix', '**/flake.lock', '**/devenv.lock', '**/devenv.yaml') }}
           restore-prefixes-first-match: |
@@ -124,12 +124,12 @@ jobs:
           persist-credentials: false
 
       - name: Install Nix
-        uses: nixbuild/nix-quick-install-action@v34
+        uses: nixbuild/nix-quick-install-action@2c9db80fb984ceb1bcaa77cdda3fdf8cfba92035 # v34
         with:
           nix_conf: ${{ env.nix_conf }}
 
       - name: Restore and save Nix store
-        uses: nix-community/cache-nix-action@v6
+        uses: nix-community/cache-nix-action@135667ec418502fa5a3598af6fb9eb733888ce6a # v6
         with:
           primary-key: nix-lint-${{ runner.os }}-${{ hashFiles('**/*.nix', '**/flake.lock', '**/devenv.lock', '**/devenv.yaml') }}
           restore-prefixes-first-match: |
