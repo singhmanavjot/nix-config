@@ -39,13 +39,25 @@
 
   claude.code.enable = true;
 
+  tasks = {
+    "check:flake" = {
+      exec = "nix flake check";
+    };
+
+    "build:darwin" = {
+      exec = ''
+        if [[ "$OSTYPE" == "darwin"* ]]; then
+          nh darwin build -q --no-nom --no-update-lock-file -H $DARWIN_TEST_HOSTNAME .
+        else
+          nh os build -q --no-update-lock-file .
+        fi
+      '';
+    };
+  };
+
   enterTest = ''
-    nix flake check
-    if [[ "$OSTYPE" == "darwin"* ]]; then
-      nh darwin build -q --no-nom --no-update-lock-file -H $DARWIN_TEST_HOSTNAME .
-    else
-      nh os build -q --no-update-lock-file .
-    fi
+    devenv tasks run check:flake
+    devenv tasks run build:darwin
   '';
 
 }
