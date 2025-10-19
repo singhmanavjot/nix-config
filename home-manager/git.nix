@@ -7,10 +7,9 @@
       userName = "Manavjot Singh";
       extraConfig = {
         gpg.format = "ssh";
-        user.signingkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILmtEIi5l8ZGQY/xhY9WFeJ8Poeq/cRJW3QAXSAYShyV";
+        user.signingkey = "~/.ssh/github_signing_key.pub";
         commit.gpgsign = true;
         tag.gpgsign = true;
-        gpg.ssh.program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign";
       };
 
       delta = {
