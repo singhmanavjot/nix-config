@@ -3,7 +3,7 @@ name: homelab
 root: ~/
 windows:
   - 󱁻 config:
-      - ssh manav@192.168.13.200
+      - ssh homelab
       - cd ~/workspace/github.com/singhmanavjot/nix-config
       - nvim .
-  -  shell: ssh manav@192.168.13.200
+  -  shell: ssh homelab
