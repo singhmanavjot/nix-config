@@ -3,8 +3,15 @@
     enable = true;
     enableDefaultConfig = false;
     matchBlocks = {
-      "*".extraOptions = {
-        IdentityAgent = "'~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock'";
+      "github.com" = {
+        hostname = "github.com";
+        user = "git";
+        identityFile = "~/.ssh/github_auth_key";
+      };
+      "homelab" = {
+        hostname = "192.168.13.200";
+        user = "manav";
+        identityFile = "~/.ssh/homelab";
       };
     };
   };
