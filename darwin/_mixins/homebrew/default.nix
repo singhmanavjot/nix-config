@@ -42,7 +42,7 @@
       "discord"
       "flameshot"
       "grammarly-desktop"
-      "tidal"
+      "qobuz"
       "stats"
       "yaak"
     ];
