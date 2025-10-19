@@ -14,7 +14,10 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      actions: write
+      contents: write # for update-flake-lock
+      id-token: write # for update-flake-lock
+      issues: write # for update-flake-lock
+      pull-requests: write # for update-flake-lock
 
     steps:
       - name: Checkout repository
@@ -23,21 +26,12 @@ jobs:
           persist-credentials: false
 
       - name: Install Nix
-        uses: nixbuild/nix-quick-install-action@2c9db80fb984ceb1bcaa77cdda3fdf8cfba92035 # v34
-        with:
-          nix_conf: ${{ env.nix_conf }}
+        uses: cachix/install-nix-action@fd24c48048070c1be9acd18c9d369a83f0fe94d7 # v31
 
-      - name: Restore and save Nix store
-        uses: nix-community/cache-nix-action@135667ec418502fa5a3598af6fb9eb733888ce6a # v6
+      - name: Setup Nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@565684385bcd71bad329742eefe8d12f2e765b39 # v13
         with:
-          primary-key: nix-${{ runner.os }}-${{ hashFiles('**/*.nix', '**/flake.lock', '**/devenv.lock', '**/devenv.yaml') }}
-          restore-prefixes-first-match: nix-${{ runner.os }}-
-          gc-max-store-size: 1G
-          purge: true
-          purge-prefixes: nix-${{ runner.os }}-
-          purge-created: 0
-          purge-last-accessed: 0
-          purge-primary-key: never
+          diagnostic-endpoint: ""
 
       - name: Install devenv
         run: nix profile install nixpkgs#devenv
