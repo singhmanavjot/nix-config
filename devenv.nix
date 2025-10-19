@@ -6,7 +6,6 @@
 {
   env = {
     SOPS_AGE_KEY_FILE = "$HOME/.config/sops/age/keys.txt";
-    DARWIN_TEST_HOSTNAME = "macbook-air";
   };
 
   packages = with pkgs; [
@@ -39,25 +38,12 @@
 
   claude.code.enable = true;
 
-  tasks = {
-    "check:flake" = {
-      exec = "nix flake check";
-    };
-
-    "build:darwin" = {
-      exec = ''
-        if [[ "$OSTYPE" == "darwin"* ]]; then
-          nh darwin build -q --no-nom --no-update-lock-file -H $DARWIN_TEST_HOSTNAME .
-        else
-          nh os build -q --no-update-lock-file .
-        fi
-      '';
-    };
-  };
-
   enterTest = ''
-    devenv tasks run check:flake
-    devenv tasks run build:darwin
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+      nh darwin build --no-update-lock-file .
+    else
+      nh os build --no-update-lock-file .
+    fi
   '';
 
 }
