@@ -3,17 +3,21 @@
     plugins.neo-tree = {
       enable = true;
 
-      closeIfLastWindow = true;
-      popupBorderStyle = "rounded";
+      settings = {
+        close_if_last_window = true;
+        popup_border_style = "rounded";
 
-      filesystem = {
-        followCurrentFile.enabled = true;
+        filesystem = {
+          follow_current_file = {
+            enabled = true;
+          };
 
-        filteredItems = {
-          hideHidden = false;
-          hideByName = [
-            ".DS_Store"
-          ];
+          filtered_items = {
+            hide_hidden = false;
+            hide_by_name = [
+              ".DS_Store"
+            ];
+          };
         };
       };
     };
