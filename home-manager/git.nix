@@ -3,29 +3,18 @@
     gh.enable = true;
     git = {
       enable = true;
-      userEmail = "64074588+singhmanavjot@users.noreply.github.com";
-      userName = "Manavjot Singh";
-      extraConfig = {
+      settings = {
+        user = {
+          email = "64074588+singhmanavjot@users.noreply.github.com";
+          name = "Manavjot Singh";
+          signingkey = "~/.ssh/github_signing_key.pub";
+        };
         gpg.format = "ssh";
-        user.signingkey = "~/.ssh/github_signing_key.pub";
         commit.gpgsign = true;
         tag.gpgsign = true;
-      };
-
-      delta = {
-        enable = true;
-        options = {
-          features = "decorations";
-          navigate = true;
-          side-by-side = true;
+        alias = {
+          lg = "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit";
         };
-      };
-
-      aliases = {
-        lg = "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit";
-      };
-
-      extraConfig = {
         push = {
           default = "matching";
         };
@@ -50,6 +39,16 @@
         "CLAUDE.local.md"
         "devenv.local.nix"
       ];
+    };
+
+    delta = {
+      enable = true;
+      enableGitIntegration = true;
+      options = {
+        features = "decorations";
+        navigate = true;
+        side-by-side = true;
+      };
     };
   };
 }
