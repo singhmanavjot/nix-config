@@ -52,7 +52,7 @@ in
       chart-testing
       cloud-provider-kind
       colima
-      cosign
+      stable.cosign
       docker
       docker-credential-helpers
       gdk
