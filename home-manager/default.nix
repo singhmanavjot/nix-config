@@ -185,6 +185,11 @@ in
     };
   };
 
+  targets.darwin = {
+    copyApps.enable = true;
+    linkApps.enable = false;
+  };
+
   editorconfig = {
     enable = true;
     settings = {
