@@ -42,9 +42,11 @@
       "discord"
       "flameshot"
       "grammarly-desktop"
-      "qobuz"
       "stats"
       "yaak"
+      "tidal"
+      "roon"
+      "protonvpn"
     ];
 
     brews = [

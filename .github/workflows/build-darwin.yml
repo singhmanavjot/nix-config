@@ -45,6 +45,7 @@ jobs:
         uses: DeterminateSystems/magic-nix-cache-action@565684385bcd71bad329742eefe8d12f2e765b39 # v13
         with:
           diagnostic-endpoint: ""
+          use-flakehub: false
 
       - name: Build Darwin configuration
         run: nix build ${{ matrix.flake.path }} -L
