@@ -1,7 +1,8 @@
 {
   programs.aerospace = {
     enable = true;
-    userSettings = {
+    launchd.enable = true;
+    settings = {
       accordion-padding = 30;
       after-login-command = [ ];
       after-startup-command = [
